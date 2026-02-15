@@ -1,6 +1,7 @@
 package raisetech.StudentManagement;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -20,34 +21,21 @@ public class StudentManagementApplication {
 
   @Autowired
   private StudentRepository repository;
-
+  @Autowired
+  private StudentsCoursesRepository coursesRepository;
 
 	public static void main(String[] args) {
 		// localhost:8080
 		SpringApplication.run(StudentManagementApplication.class, args);
 	}
 
-	@GetMapping("/student")
-	public String getStudent(@RequestParam String name) {
-    Student student = repository.searchByName(name);
-
-    return student.getName() + " " + student.getAge() + "歳";
+	@GetMapping("/studentList")
+	public List<Student> getStudentList() {
+    return repository.search();
   }
 
-  @PostMapping("/student")
-  public void registerStudent(String name, int age){
-      repository.registerStudent(name, age);
+  @GetMapping("/studentsCoursesList")
+  public List<StudentsCourses> getStudentsCoursesList(){
+    return coursesRepository.search();
   }
-
-  @PatchMapping("/student")
-  public void updateStudentAge(String name, int age){
-      repository.updateStudent(name, age);
-  }
-
-  @DeleteMapping("/student")
-  public void deleteStudent(String name){
-      repository.deleteStudent(name);
-  }
-
-
 }
